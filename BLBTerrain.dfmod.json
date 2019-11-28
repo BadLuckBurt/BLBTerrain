@@ -1,0 +1,16 @@
+{
+    "ModTitle": "BadLuckBurt's Terrain",
+    "ModVersion": "0.1",
+    "ModAuthor": "BadLuckBurt",
+    "ContactInfo": null,
+    "DFUnity_Version": "0.10.12",
+    "ModDescription": "Alternate terrain noise",
+    "GUID": "83339ad2-f1a2-4007-bef7-e9c74ef97b73",
+    "Files": [
+        "Assets/Game/Mods/BLBTerrain/BLBTerrainSampler.cs",
+        "Assets/Game/Mods/BLBTerrain/BLBTerrain.cs",
+        "Assets/Game/Mods/BLBTerrain/modsettings.json",
+        "Assets/Game/Mods/BLBTerrain/BLBTerrain.dfmod.json"
+    ],
+    "Contributes": null
+}

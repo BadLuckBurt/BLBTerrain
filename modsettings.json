@@ -1,0 +1,495 @@
+{
+    "Version": "1.0",
+    "Sections": [
+        {
+            "Name": "ocean",
+            "Description": "Noise settings for ocean region",
+            "IsAdvanced": false,
+            "Keys": [
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 0.25,
+                    "Name": "lowFrequency",
+                    "Description": "Frequency used for low scale noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 2.0,
+                    "Name": "lowAmplitude",
+                    "Description": "Amplitude used for low scale noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 0.2,
+                    "Name": "lowPersistence",
+                    "Description": "Persistence used for low scale noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0,
+                    "Max": 16,
+                    "Value": 8,
+                    "Name": "lowOctaves",
+                    "Description": "Octaves used for low scale noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 0.0,
+                    "Name": "lowScale",
+                    "Description": "Scale used for low noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 0.095,
+                    "Name": "highFrequency",
+                    "Description": "Frequency used for high noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 0.85,
+                    "Name": "highAmplitude",
+                    "Description": "Amplitude used for high noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 0.225,
+                    "Name": "highPersistence",
+                    "Description": "Persistence used for high noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0,
+                    "Max": 16,
+                    "Value": 16,
+                    "Name": "highOctaves",
+                    "Description": "Octaves used for high noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 0.0,
+                    "Name": "highScale",
+                    "Description": "Scale used for high noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                }
+            ],
+            "$version": "v1"
+        },
+        {
+            "Name": "swamp",
+            "Description": "Noise settings for swamp",
+            "IsAdvanced": false,
+            "Keys": [
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 0.125,
+                    "Name": "lowFrequency",
+                    "Description": "Frequency used for low scale noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 0.125,
+                    "Name": "lowAmplitude",
+                    "Description": "Amplitude used for low scale noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 0.65,
+                    "Name": "lowPersistence",
+                    "Description": "Persistence used for low scale noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0,
+                    "Max": 16,
+                    "Value": 8,
+                    "Name": "lowOctaves",
+                    "Description": "Octaves used for low scale noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 1.25,
+                    "Name": "lowScale",
+                    "Description": "Scale used for low noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 0.25,
+                    "Name": "highFrequency",
+                    "Description": "Frequency used for high noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 0.25,
+                    "Name": "highAmplitude",
+                    "Description": "Amplitude used for high noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 0.5,
+                    "Name": "highPersistence",
+                    "Description": "Persistence used for high noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0,
+                    "Max": 16,
+                    "Value": 12,
+                    "Name": "highOctaves",
+                    "Description": "Octaves used for high noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 4.0,
+                    "Name": "highScale",
+                    "Description": "Scale used for high noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                }
+            ],
+            "$version": "v1"
+        },
+        {
+            "Name": "desert",
+            "Description": "Noise settings for desert",
+            "IsAdvanced": false,
+            "Keys": [
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 0.15,
+                    "Name": "lowFrequency",
+                    "Description": "Frequency used for low scale noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 0.125,
+                    "Name": "lowAmplitude",
+                    "Description": "Amplitude used for low scale noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 0.75,
+                    "Name": "lowPersistence",
+                    "Description": "Persistence used for low scale noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0,
+                    "Max": 16,
+                    "Value": 2,
+                    "Name": "lowOctaves",
+                    "Description": "Octaves used for low scale noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 2.5,
+                    "Name": "lowScale",
+                    "Description": "Scale used for low noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 0.15,
+                    "Name": "highFrequency",
+                    "Description": "Frequency used for high noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 2.0,
+                    "Name": "highAmplitude",
+                    "Description": "Amplitude used for high noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 0.25,
+                    "Name": "highPersistence",
+                    "Description": "Persistence used for high noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0,
+                    "Max": 16,
+                    "Value": 8,
+                    "Name": "highOctaves",
+                    "Description": "Octaves used for high noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 1.5,
+                    "Name": "highScale",
+                    "Description": "Scale used for high noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                }
+            ],
+            "$version": "v1"
+        },
+        {
+            "Name": "mountain",
+            "Description": "Noise settings for mountain",
+            "IsAdvanced": false,
+            "Keys": [
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 0.25,
+                    "Name": "lowFrequency",
+                    "Description": "Frequency used for low scale noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 2.0,
+                    "Name": "lowAmplitude",
+                    "Description": "Amplitude used for low scale noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 0.2,
+                    "Name": "lowPersistence",
+                    "Description": "Persistence used for low scale noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0,
+                    "Max": 16,
+                    "Value": 8,
+                    "Name": "lowOctaves",
+                    "Description": "Octaves used for low scale noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 1.55,
+                    "Name": "lowScale",
+                    "Description": "Scale used for low noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 0.095,
+                    "Name": "highFrequency",
+                    "Description": "Frequency used for high noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 0.95,
+                    "Name": "highAmplitude",
+                    "Description": "Amplitude used for high noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 0.225,
+                    "Name": "highPersistence",
+                    "Description": "Persistence used for high noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0,
+                    "Max": 16,
+                    "Value": 16,
+                    "Name": "highOctaves",
+                    "Description": "Octaves used for high noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 1.25,
+                    "Name": "highScale",
+                    "Description": "Scale used for high noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                }
+            ],
+            "$version": "v1"
+        },
+        {
+            "Name": "temperate",
+            "Description": "Noise settings for temperate",
+            "IsAdvanced": false,
+            "Keys": [
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 0.1,
+                    "Name": "lowFrequency",
+                    "Description": "Frequency used for low scale noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 2.0,
+                    "Name": "lowAmplitude",
+                    "Description": "Amplitude used for low scale noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 0.95,
+                    "Name": "lowPersistence",
+                    "Description": "Persistence used for low scale noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0,
+                    "Max": 16,
+                    "Value": 2,
+                    "Name": "lowOctaves",
+                    "Description": "Octaves used for low scale noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 1.25,
+                    "Name": "lowScale",
+                    "Description": "Scale used for low noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 0.15,
+                    "Name": "highFrequency",
+                    "Description": "Frequency used for high noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 0.375,
+                    "Name": "highAmplitude",
+                    "Description": "Amplitude used for high noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 0.45,
+                    "Name": "highPersistence",
+                    "Description": "Persistence used for high noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0,
+                    "Max": 16,
+                    "Value": 12,
+                    "Name": "highOctaves",
+                    "Description": "Octaves used for high noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 1.125,
+                    "Name": "highScale",
+                    "Description": "Scale used for high noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                }
+            ],
+            "$version": "v1"
+        }
+    ]
+}
