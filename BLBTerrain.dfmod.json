@@ -10,7 +10,8 @@
         "Assets/Game/Mods/BLBTerrain/BLBTerrainSampler.cs",
         "Assets/Game/Mods/BLBTerrain/BLBTerrain.cs",
         "Assets/Game/Mods/BLBTerrain/modsettings.json",
-        "Assets/Game/Mods/BLBTerrain/BLBTerrain.dfmod.json"
+        "Assets/Game/Mods/BLBTerrain/BLBTerrain.dfmod.json",
+        "Assets/Game/Mods/BLBTerrain/BLBTerrainTexturing.cs"
     ],
     "Contributes": null
 }

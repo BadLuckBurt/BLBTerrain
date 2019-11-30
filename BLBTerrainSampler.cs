@@ -64,39 +64,10 @@ public class BLBTerrainSampler : TerrainSampler
         public int worldHeight;
         //Climate of current pixel and neighbours
         public int worldClimate;
-        public int worldClimateNorth;
-        public int worldClimateNorthEast;
-        public int worldClimateEast;
-        public int worldClimateSouthEast;
-        public int worldClimateSouth;
-        public int worldClimateSouthWest;
-        public int worldClimateWest;
-        public int worldClimateNorthWest;
+        public int[] noiseIndexes;
 
         float baseHeight, noiseHeight;
         float x1, x2, x3, x4;
-
-        public int GetNoiseIndex(int currentClimate, int worldClimate) {
-             //Choose the corresponding climate index
-             int noiseIndex = 4;
-            //Ocean
-            if(worldClimate == 223 || currentClimate == 223) {
-                noiseIndex = 0;
-            //Swamp
-            } else if(currentClimate == 227 || currentClimate == 228) {
-                noiseIndex = 1;
-            //Desert
-            } else if(currentClimate == 224 || currentClimate == 225 || currentClimate == 229) {
-                noiseIndex = 2;
-            //Mountain
-            } else if(currentClimate == 226 || currentClimate == 230) {
-                noiseIndex = 3;
-            //Temperate
-            } else {
-                noiseIndex = 4;
-            }
-            return noiseIndex;
-        }
 
         public void Execute(int index)
         {
@@ -126,7 +97,6 @@ public class BLBTerrainSampler : TerrainSampler
                 scaledHeight += baseHeight * baseHeightScale;
             }
             
-
             // Bicubic sample large height map for noise mask over terrain features
             x1 = TerrainHelper.CubicInterpolator(lhm[JobA.Idx(ix, iy + 0, ld)], lhm[JobA.Idx(ix + 1, iy + 0, ld)], lhm[JobA.Idx(ix + 2, iy + 0, ld)], lhm[JobA.Idx(ix + 3, iy + 0, ld)], fracx);
             x2 = TerrainHelper.CubicInterpolator(lhm[JobA.Idx(ix, iy + 1, ld)], lhm[JobA.Idx(ix + 1, iy + 1, ld)], lhm[JobA.Idx(ix + 2, iy + 1, ld)], lhm[JobA.Idx(ix + 3, iy + 1, ld)], fracx);
@@ -134,8 +104,6 @@ public class BLBTerrainSampler : TerrainSampler
             x4 = TerrainHelper.CubicInterpolator(lhm[JobA.Idx(ix, iy + 3, ld)], lhm[JobA.Idx(ix + 1, iy + 3, ld)], lhm[JobA.Idx(ix + 2, iy + 3, ld)], lhm[JobA.Idx(ix + 3, iy + 3, ld)], fracx);
             noiseHeight = TerrainHelper.CubicInterpolator(x1, x2, x3, x4, fracy);
             scaledHeight += noiseHeight * noiseMapScale;
-
-            
 
             // Additional noise mask for small terrain features at ground level
             int noisex = mapPixelX * (hDim - 1) + x;
@@ -158,7 +126,7 @@ public class BLBTerrainSampler : TerrainSampler
 
             float height = 0.0f;
 
-            int noiseIndex = 0;
+            int noiseIndex = noiseIndexes[4];
             bool north = (y < 32);
             bool east = (x > 96);
             bool south = (y > 96);
@@ -168,45 +136,45 @@ public class BLBTerrainSampler : TerrainSampler
             //This way we can adjust the noise parameters so the terrain will blend
             //Regardless of climate noise
             if(north && west) {
-                if(worldClimate != worldClimateNorthWest) {
-                    currentClimate = worldClimateNorthWest;
-                } else if(worldClimate != worldClimateNorth) {
-                    currentClimate = worldClimateNorth;
+                if(noiseIndex != noiseIndexes[0]) {
+                    noiseIndex = noiseIndexes[0];
+                } else if (noiseIndex != noiseIndexes[1]) {
+                    noiseIndex = noiseIndexes[1];
                 } else {
-                    currentClimate = worldClimateWest;
+                    noiseIndex = noiseIndexes[3];
                 }
             } else if(north && east) {
-                if(worldClimate != worldClimateNorthEast) {
-                    currentClimate = worldClimateNorthEast;
-                } else if(worldClimate != worldClimateNorth) {
-                    currentClimate = worldClimateNorth;
+                if(noiseIndex != noiseIndexes[2]) {
+                    noiseIndex = noiseIndexes[2];
+                } else if (noiseIndex != noiseIndexes[1]) {
+                    noiseIndex = noiseIndexes[1];
                 } else {
-                    currentClimate = worldClimateEast;
+                    noiseIndex = noiseIndexes[5];
                 }
             } else if(south && west) {
-                if(worldClimate != worldClimateSouthWest) {
-                    currentClimate = worldClimateSouthWest;
-                } else if(worldClimate != worldClimateSouth) {
-                    currentClimate = worldClimateSouth;
+                if(noiseIndex != noiseIndexes[6]) {
+                    noiseIndex = noiseIndexes[6];
+                } else if(noiseIndex != noiseIndexes[7]) {
+                    noiseIndex = noiseIndexes[7];
                 } else {
-                    currentClimate = worldClimateWest;
+                    noiseIndex = noiseIndexes[3];
                 }
             } else if(south && east) {
-                if(worldClimate != worldClimateSouthEast) {
-                    currentClimate = worldClimateSouthEast;
-                } else if(currentClimate != worldClimateSouth) {
-                    currentClimate = worldClimateSouth;
+                if(noiseIndex != noiseIndexes[8]) {
+                    noiseIndex = noiseIndexes[8];
+                } else if(noiseIndex != noiseIndexes[7]) {
+                    noiseIndex = noiseIndexes[7];
                 } else {
-                    currentClimate = worldClimateEast;
+                    noiseIndex = noiseIndexes[5];
                 }
             } else if(west) {
-                currentClimate = worldClimateWest;
+                noiseIndex = noiseIndexes[3];
             } else if(east) {
-                currentClimate = worldClimateEast;
+                noiseIndex = noiseIndexes[5];
             } else if(north) {
-                currentClimate = worldClimateNorth;
+                noiseIndex = noiseIndexes[1];
             } else if(south) {
-                currentClimate = worldClimateSouth;
+                noiseIndex = noiseIndexes[7];
             }
 
             //The following section is work in progress, nicer transitions should be possible
@@ -215,29 +183,28 @@ public class BLBTerrainSampler : TerrainSampler
             //The current blend order from weak to strong is:
             //Ocean - Swamp <- Desert <- Temperate <- Mountain
             //Ocean 
-            if(worldClimate == 223) {
+            if(noiseIndexes[4] == 0) {
 
             //Swamp
-            } else if(worldClimate == 227 || worldClimate == 228) {
+            } else if(noiseIndexes[4] == 1) {
                 //Swamp only uses swamp noise, the other terrains blend into it
-                currentClimate = worldClimate;
+                noiseIndex = noiseIndexes[4];
             //Desert
-            } else if(worldClimate == 224 || worldClimate == 225 || worldClimate == 229) {
+            } else if(noiseIndexes[4] == 2) {
                 //Desert only extends into swamp
-                if(currentClimate != 227 && currentClimate != 228) {
-                    currentClimate = worldClimate;
+                if(noiseIndex != 1) {
+                    noiseIndex = noiseIndexes[4];
                 }
             //Mountain
-            } else if(worldClimate == 226 || worldClimate == 230) {
+            } else if(noiseIndexes[4] == 3) {
                 //Mountain extends into everything
             //Temperate
-            } else {
+            } else if(noiseIndexes[4] == 4) {
                 //Temperate only extends into swamp rainforest and desert so reset if climate is mountain
-                if(currentClimate == 226 || currentClimate == 230) {
-                    currentClimate = worldClimate;
+                if(noiseIndex == 3) {
+                    noiseIndex = noiseIndexes[4];
                 }
             }
-            noiseIndex = GetNoiseIndex(currentClimate, worldClimate);
             //Retrieve the appropriate noise settings
             lowFrequency = modSettings[noiseIndex,0];
             lowAmplitude = modSettings[noiseIndex,1];
@@ -298,6 +265,18 @@ public class BLBTerrainSampler : TerrainSampler
 
         // Extract height samples for all chunks
         int hDim = HeightmapDimension;
+        int[] worldClimates = new int[9]{
+            mapPixel.worldClimateNorthWest, 
+            mapPixel.worldClimateNorth,
+            mapPixel.worldClimateNorthEast,
+            mapPixel.worldClimateWest,
+            mapPixel.worldClimate,
+            mapPixel.worldClimateEast,
+            mapPixel.worldClimateSouthWest,
+            mapPixel.worldClimateSouth,
+            mapPixel.worldClimateSouthEast
+        };
+        int[] noiseIndexes = GetClimateNoiseIndexes(worldClimates);
         GenerateSamplesJob generateSamplesJob = new GenerateSamplesJob
         {
             shm = shm,
@@ -313,17 +292,47 @@ public class BLBTerrainSampler : TerrainSampler
             worldPolitic = mapPixel.worldPolitic,
             worldClimate = mapPixel.worldClimate,
             worldHeight = mapPixel.worldHeight,
-            worldClimateNorth = mapPixel.worldClimateNorth,
-            worldClimateNorthEast = mapPixel.worldClimateNorthEast,
-            worldClimateEast = mapPixel.worldClimateEast,
-            worldClimateSouthEast = mapPixel.worldClimateSouthEast,
-            worldClimateSouth = mapPixel.worldClimateSouth,
-            worldClimateSouthWest = mapPixel.worldClimateSouthWest,
-            worldClimateWest = mapPixel.worldClimateWest,
-            worldClimateNorthWest = mapPixel.worldClimateNorthWest
+            noiseIndexes = noiseIndexes
         };
 
         JobHandle generateSamplesHandle = generateSamplesJob.Schedule(hDim * hDim, 64);     // Batch = 1 breaks it since shm not copied... test again later
         return generateSamplesHandle;
+    }
+
+    public int[] GetClimateNoiseIndexes(int[] worldClimates) {
+        int[] noiseIndexes = new int[9];
+        for(int i = 0; i < worldClimates.Length; i++) {
+            switch(worldClimates[i]) {
+                case 223:
+                    //Ocean
+                    noiseIndexes[i] = 0;
+                    break;
+                case 227:
+                case 228:
+                    //Swamp
+                    noiseIndexes[i] = 1;
+                    break;
+                case 224:
+                case 225:
+                case 229:
+                    //Desert
+                    noiseIndexes[i] = 2;
+                    break;
+                case 226:
+                case 230:
+                    //Mountain
+                    noiseIndexes[i] = 3;
+                    break;
+                case 231:
+                case 232:
+                    //Temperate
+                    noiseIndexes[i] = 4;
+                    break;
+                default:
+                    noiseIndexes[i] = 0;
+                    break;
+            }
+        }
+        return noiseIndexes;
     }
 }

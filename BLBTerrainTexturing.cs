@@ -55,18 +55,10 @@ namespace DaggerfallWorkshop
                 mapPixelX = mapData.mapPixelX,
                 mapPixelY = mapData.mapPixelY,
                 worldClimate = mapData.worldClimate,
-                /* BLB: Added but not currently used except for locationID and locationSize */
+                /* BLB: Added locationID and locationSize */
                 locationID = mapData.locationID,
-                locationNorth = mapData.locationNorth,
-                locationNorthEast = mapData.locationNorthEast,
-                locationEast = mapData.locationEast,
-                locationSouthEast = mapData.locationSouthEast,
-                locationSouth = mapData.locationSouth,
-                locationSouthWest = mapData.locationSouthWest,
-                locationWest = mapData.locationWest,
-                locationNorthWest = mapData.locationNorthWest,
                 locationSize = locationSize
-                /* BLB: Added but not currently used except for locationID and locationSize */
+                /* BLB: Added locationID and locationSize */
             };
             JobHandle tileDataHandle = tileDataJob.Schedule(tileDataDim * tileDataDim, 64, dependencies);
             // Assign tile data to terrain
@@ -119,15 +111,12 @@ namespace DaggerfallWorkshop
 
                 // Do nothing if in location rect as texture already set, to 0xFF if zero
                 if(
-                    (x > locationRect.xMin - 4 && x < locationRect.xMax + 4) && 
-                    (y > locationRect.yMin && y - 4 < locationRect.yMax + 4) && 
+                    (x >= locationRect.xMin && x <= locationRect.xMax) && 
+                    (y >= locationRect.yMin && y <= locationRect.yMax) && 
                     tilemapData[index] != 0 
                 ) {
                     return;
                 }
-
-                //if (tilemapData[index] != 0)
-                    //return;
 
                 // Assign tile texture
                 if (march)
@@ -169,14 +158,6 @@ namespace DaggerfallWorkshop
 
             public int locationID;
             public int worldClimate;
-            public bool locationNorth;
-            public bool locationNorthEast;
-            public bool locationEast;
-            public bool locationSouthEast;
-            public bool locationSouth;
-            public bool locationSouthWest;
-            public bool locationWest;
-            public bool locationNorthWest;
 
             public float locationSize;
 
@@ -266,24 +247,16 @@ namespace DaggerfallWorkshop
                 int randMin = -20000000;
                 int randMax = 10000000;
                 //Dealing with a location near water
-                if(height <= beachElevation && worldClimate != 223 && 
-                (
-                    (locationID > -1)
-                    /*(locationNorthWest && x < 32 && y < 32) || 
-                    (locationNorthEast && x > 96 && y < 32) || 
-                    (locationSouthEast && x > 96 && y > 96) || 
-                    (locationSouthWest && x < 32 && y > 96) || 
-                    (locationWest && x < 32) || 
-                    (locationEast && x > 96) ||
-                    (locationNorth && y < 32) || 
-                    (locationSouth && y > 96)*/
-                )) {                            
+                if(height <= beachElevation && worldClimate != 223 && locationID > -1) {                            
                     float fx = x / 128.0f;
                     float fy = y / 128.0f;
 
                     //As we get closer to the center of the tile, we allow more dirt tiles
                     //by lowering the rndCheck
-                    if(
+                    if(locationSize > 64) {
+                        rndCheck = 0.125f;
+                    }
+                    else if(
                         (fx < 0.0625f || fy < 0.0625f) || 
                         (fx > 0.9375f || fy > 0.9375f)
                     ) {
@@ -319,6 +292,7 @@ namespace DaggerfallWorkshop
                     ) {
                         rndCheck = 0.1f;
                     }
+                    rndCheck = rndCheck;
                     rnd = NoiseWeight(latitude, longitude);
                     if(rnd >= rndCheck) {
                         //tileData[index] = GetClimateWeightedRecord(rnd, worldClimate);
@@ -336,10 +310,6 @@ namespace DaggerfallWorkshop
                 } else if (height > oceanElevation && height < (beachElevation  + (JobRand.Next(-15000000, 15000000) / 10000000f)))
                 {
                     tileData[index] = GetClimateWeightedRecord(rnd, worldClimate);
-                    return;
-                } else if(locationID > -1) {
-                    weight += NoiseWeight(latitude, longitude);
-                    tileData[index] = GetClimateWeightedRecord(weight, worldClimate);
                     return;
                 }
                 // Set texture tile using weighted noise
