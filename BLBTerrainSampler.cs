@@ -49,6 +49,8 @@ public class BLBTerrainSampler : TerrainSampler
         public NativeArray<byte> shm;
         [ReadOnly]
         public NativeArray<byte> lhm;
+        [ReadOnly]
+        public NativeArray<byte> adjacentClimates;
 
         public NativeArray<float> heightmapData;
 
@@ -60,11 +62,10 @@ public class BLBTerrainSampler : TerrainSampler
         public int mapPixelY;
         public float maxTerrainHeight;
         public int worldPolitic;
-        //Worldheight from WOODS.WLD, used for sealevel check
-        public int worldHeight;
-        //Climate of current pixel and neighbours
+        // Climate of current pixel converted to noise index
         public int worldClimate;
-        public int[] noiseIndexes;
+        // Worldheight from WOODS.WLD, used for sealevel check
+        public int worldHeight;
 
         float baseHeight, noiseHeight;
         float x1, x2, x3, x4;
@@ -122,11 +123,9 @@ public class BLBTerrainSampler : TerrainSampler
             int highOctaves = 1;
             float highScale = 1.0f;
 
-            int currentClimate = worldClimate;
-
             float height = 0.0f;
 
-            int noiseIndex = noiseIndexes[4];
+            int noiseIndex = worldClimate;
             bool north = (y < 32);
             bool east = (x > 96);
             bool south = (y > 96);
@@ -135,46 +134,46 @@ public class BLBTerrainSampler : TerrainSampler
             //In the appropriate direction and set the currentClimate accordingly
             //This way we can adjust the noise parameters so the terrain will blend
             //Regardless of climate noise
-            if(north && west) {
-                if(noiseIndex != noiseIndexes[0]) {
-                    noiseIndex = noiseIndexes[0];
-                } else if (noiseIndex != noiseIndexes[1]) {
-                    noiseIndex = noiseIndexes[1];
+            if (north && west) {
+                if (noiseIndex != adjacentClimates[(int)MapPixelData.Adjacent.NorthWest]) {
+                    noiseIndex = adjacentClimates[(int)MapPixelData.Adjacent.NorthWest];
+                } else if (noiseIndex != adjacentClimates[(int)MapPixelData.Adjacent.North]) {
+                    noiseIndex = adjacentClimates[(int)MapPixelData.Adjacent.North];
                 } else {
-                    noiseIndex = noiseIndexes[3];
+                    noiseIndex = adjacentClimates[(int)MapPixelData.Adjacent.West];
                 }
-            } else if(north && east) {
-                if(noiseIndex != noiseIndexes[2]) {
-                    noiseIndex = noiseIndexes[2];
-                } else if (noiseIndex != noiseIndexes[1]) {
-                    noiseIndex = noiseIndexes[1];
+            } else if (north && east) {
+                if (noiseIndex != adjacentClimates[(int)MapPixelData.Adjacent.NorthEast]) {
+                    noiseIndex = adjacentClimates[(int)MapPixelData.Adjacent.NorthEast];
+                } else if (noiseIndex != adjacentClimates[(int)MapPixelData.Adjacent.North]) {
+                    noiseIndex = adjacentClimates[(int)MapPixelData.Adjacent.North];
                 } else {
-                    noiseIndex = noiseIndexes[5];
+                    noiseIndex = adjacentClimates[(int)MapPixelData.Adjacent.East];
                 }
-            } else if(south && west) {
-                if(noiseIndex != noiseIndexes[6]) {
-                    noiseIndex = noiseIndexes[6];
-                } else if(noiseIndex != noiseIndexes[7]) {
-                    noiseIndex = noiseIndexes[7];
+            } else if (south && west) {
+                if (noiseIndex != adjacentClimates[(int)MapPixelData.Adjacent.SouthWest]) {
+                    noiseIndex = adjacentClimates[(int)MapPixelData.Adjacent.SouthWest];
+                } else if (noiseIndex != adjacentClimates[(int)MapPixelData.Adjacent.South]) {
+                    noiseIndex = adjacentClimates[(int)MapPixelData.Adjacent.South];
                 } else {
-                    noiseIndex = noiseIndexes[3];
+                    noiseIndex = adjacentClimates[(int)MapPixelData.Adjacent.West];
                 }
-            } else if(south && east) {
-                if(noiseIndex != noiseIndexes[8]) {
-                    noiseIndex = noiseIndexes[8];
-                } else if(noiseIndex != noiseIndexes[7]) {
-                    noiseIndex = noiseIndexes[7];
+            } else if (south && east) {
+                if (noiseIndex != adjacentClimates[(int)MapPixelData.Adjacent.SouthEast]) {
+                    noiseIndex = adjacentClimates[(int)MapPixelData.Adjacent.SouthEast];
+                } else if (noiseIndex != adjacentClimates[(int)MapPixelData.Adjacent.South]) {
+                    noiseIndex = adjacentClimates[(int)MapPixelData.Adjacent.South];
                 } else {
-                    noiseIndex = noiseIndexes[5];
+                    noiseIndex = adjacentClimates[(int)MapPixelData.Adjacent.East];
                 }
-            } else if(west) {
-                noiseIndex = noiseIndexes[3];
-            } else if(east) {
-                noiseIndex = noiseIndexes[5];
-            } else if(north) {
-                noiseIndex = noiseIndexes[1];
-            } else if(south) {
-                noiseIndex = noiseIndexes[7];
+            } else if (west) {
+                noiseIndex = adjacentClimates[(int)MapPixelData.Adjacent.West];
+            } else if (east) {
+                noiseIndex = adjacentClimates[(int)MapPixelData.Adjacent.East];
+            } else if (north) {
+                noiseIndex = adjacentClimates[(int)MapPixelData.Adjacent.North];
+            } else if (south) {
+                noiseIndex = adjacentClimates[(int)MapPixelData.Adjacent.South];
             }
 
             //The following section is work in progress, nicer transitions should be possible
@@ -183,26 +182,26 @@ public class BLBTerrainSampler : TerrainSampler
             //The current blend order from weak to strong is:
             //Ocean - Swamp <- Desert <- Temperate <- Mountain
             //Ocean 
-            if(noiseIndexes[4] == 0) {
+            if(worldClimate == 0) {
 
             //Swamp
-            } else if(noiseIndexes[4] == 1) {
+            } else if(worldClimate == 1) {
                 //Swamp only uses swamp noise, the other terrains blend into it
-                noiseIndex = noiseIndexes[4];
+                noiseIndex = worldClimate;
             //Desert
-            } else if(noiseIndexes[4] == 2) {
+            } else if(worldClimate == 2) {
                 //Desert only extends into swamp
                 if(noiseIndex != 1) {
-                    noiseIndex = noiseIndexes[4];
+                    noiseIndex = worldClimate;
                 }
             //Mountain
-            } else if(noiseIndexes[4] == 3) {
+            } else if(worldClimate == 3) {
                 //Mountain extends into everything
             //Temperate
-            } else if(noiseIndexes[4] == 4) {
+            } else if(worldClimate == 4) {
                 //Temperate only extends into swamp rainforest and desert so reset if climate is mountain
                 if(noiseIndex == 3) {
-                    noiseIndex = noiseIndexes[4];
+                    noiseIndex = worldClimate;
                 }
             }
             //Retrieve the appropriate noise settings
@@ -265,22 +264,15 @@ public class BLBTerrainSampler : TerrainSampler
 
         // Extract height samples for all chunks
         int hDim = HeightmapDimension;
-        int[] worldClimates = new int[9]{
-            mapPixel.worldClimateNorthWest, 
-            mapPixel.worldClimateNorth,
-            mapPixel.worldClimateNorthEast,
-            mapPixel.worldClimateWest,
-            mapPixel.worldClimate,
-            mapPixel.worldClimateEast,
-            mapPixel.worldClimateSouthWest,
-            mapPixel.worldClimateSouth,
-            mapPixel.worldClimateSouthEast
-        };
-        int[] noiseIndexes = GetClimateNoiseIndexes(worldClimates);
+
+        // Convert the adjacent climates to noise indexes
+        ConvertClimateNoiseIndexes(mapPixel.adjacentClimates);
+
         GenerateSamplesJob generateSamplesJob = new GenerateSamplesJob
         {
             shm = shm,
             lhm = lhm,
+            adjacentClimates = mapPixel.adjacentClimates,
             heightmapData = mapPixel.heightmapData,
             sd = sDim,
             ld = lDim,
@@ -290,49 +282,45 @@ public class BLBTerrainSampler : TerrainSampler
             mapPixelY = mapPixel.mapPixelY,
             maxTerrainHeight = MaxTerrainHeight,
             worldPolitic = mapPixel.worldPolitic,
-            worldClimate = mapPixel.worldClimate,
+            worldClimate = GetClimateNoiseIndex((byte)mapPixel.worldClimate),
             worldHeight = mapPixel.worldHeight,
-            noiseIndexes = noiseIndexes
         };
 
         JobHandle generateSamplesHandle = generateSamplesJob.Schedule(hDim * hDim, 64);     // Batch = 1 breaks it since shm not copied... test again later
         return generateSamplesHandle;
     }
 
-    public int[] GetClimateNoiseIndexes(int[] worldClimates) {
-        int[] noiseIndexes = new int[9];
-        for(int i = 0; i < worldClimates.Length; i++) {
-            switch(worldClimates[i]) {
-                case 223:
-                    //Ocean
-                    noiseIndexes[i] = 0;
-                    break;
-                case 227:
-                case 228:
-                    //Swamp
-                    noiseIndexes[i] = 1;
-                    break;
-                case 224:
-                case 225:
-                case 229:
-                    //Desert
-                    noiseIndexes[i] = 2;
-                    break;
-                case 226:
-                case 230:
-                    //Mountain
-                    noiseIndexes[i] = 3;
-                    break;
-                case 231:
-                case 232:
-                    //Temperate
-                    noiseIndexes[i] = 4;
-                    break;
-                default:
-                    noiseIndexes[i] = 0;
-                    break;
-            }
+    public void ConvertClimateNoiseIndexes(NativeArray<byte> adjacentClimates)
+    {
+        for(int i = 0; i < adjacentClimates.Length; i++)
+            adjacentClimates[i] = GetClimateNoiseIndex(adjacentClimates[i]);
+    }
+
+    private static byte GetClimateNoiseIndex(byte worldClimate)
+    {
+        switch (worldClimate)
+        {
+            case 223:
+                //Ocean
+                return 0;
+            case 227:
+            case 228:
+                //Swamp
+                return 1;
+            case 224:
+            case 225:
+            case 229:
+                //Desert
+                return 2;
+            case 226:
+            case 230:
+                //Mountain
+                return 3;
+            case 231:
+            case 232:
+                //Temperate
+                return 4;
         }
-        return noiseIndexes;
+        return 0;
     }
 }
