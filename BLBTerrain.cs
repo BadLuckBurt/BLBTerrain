@@ -35,7 +35,7 @@ public class BLBTerrain : MonoBehaviour
             "highScale"
             };
         var settings = Mod.GetSettings();
-        object[,] noiseSettings = new object[5,10];
+        float[,] noiseSettings = new float[5,10];
         for(int i = 0; i < 5; i++) {
             for(int j = 0; j < 10; j++) {
                 if(j == 3 || j == 8) {

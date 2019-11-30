@@ -16,7 +16,7 @@ public class BLBTerrainSampler : TerrainSampler
     const float scaledBeachElevation = 6.125f * baseHeightScale;
 
     //Holds the mod settings, making the sampler configurable
-    public static object[,] modSettings;
+    public static float[,] modSettings;
 
     // Max terrain height of this sampler implementation
     //const float maxTerrainHeight = 1539f;
@@ -28,7 +28,7 @@ public class BLBTerrainSampler : TerrainSampler
         get { return 1; }
     }
 
-    public BLBTerrainSampler(object[,] noiseSettings)
+    public BLBTerrainSampler(float[,] noiseSettings)
     {
         modSettings = noiseSettings;
         HeightmapDimension = defaultHeightmapDimension;
@@ -241,17 +241,17 @@ public class BLBTerrainSampler : TerrainSampler
             }
             noiseIndex = GetNoiseIndex(currentClimate, worldClimate);
             //Retrieve the appropriate noise settings
-            lowFrequency = (float) modSettings[noiseIndex,0];
-            lowAmplitude = (float) modSettings[noiseIndex,1];
-            lowPersistence = (float) modSettings[noiseIndex,2];
+            lowFrequency = modSettings[noiseIndex,0];
+            lowAmplitude = modSettings[noiseIndex,1];
+            lowPersistence = modSettings[noiseIndex,2];
             lowOctaves = (int) modSettings[noiseIndex,3];
-            lowScale = (float) modSettings[noiseIndex,4];
+            lowScale = modSettings[noiseIndex,4];
 
-            highFrequency = (float) modSettings[noiseIndex,5];
-            highAmplitude = (float) modSettings[noiseIndex,6];
-            highPersistence = (float) modSettings[noiseIndex,7];
+            highFrequency = modSettings[noiseIndex,5];
+            highAmplitude = modSettings[noiseIndex,6];
+            highPersistence = modSettings[noiseIndex,7];
             highOctaves = (int) modSettings[noiseIndex,8];
-            highScale = (float) modSettings[noiseIndex,9];
+            highScale = modSettings[noiseIndex,9];
 
             //Generate and apply the noise
             float lowFreq = TerrainHelper.GetNoise(noisex, noisey, lowFrequency, lowAmplitude, lowPersistence, lowOctaves) * lowScale;
