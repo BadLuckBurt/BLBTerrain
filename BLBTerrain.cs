@@ -49,6 +49,7 @@ public class BLBTerrain : MonoBehaviour
         //int number = settings.GetValue<int>("section", "key");
         blbTerrainSampler = new BLBTerrainSampler(noiseSettings);
         DaggerfallUnity.Instance.TerrainSampler = blbTerrainSampler;
+        DaggerfallUnity.Instance.TerrainTexturing = new BLBTerrainTexturing();
         Mod.IsReady = true;
     }
 }

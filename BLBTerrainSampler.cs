@@ -62,8 +62,6 @@ public class BLBTerrainSampler : TerrainSampler
         public int worldPolitic;
         //Worldheight from WOODS.WLD, used for sealevel check
         public int worldHeight;
-        //Indicates if pixel is at sea level <=2
-        public bool seaLevel;
         //Climate of current pixel and neighbours
         public int worldClimate;
         public int worldClimateNorth;
@@ -315,7 +313,6 @@ public class BLBTerrainSampler : TerrainSampler
             worldPolitic = mapPixel.worldPolitic,
             worldClimate = mapPixel.worldClimate,
             worldHeight = mapPixel.worldHeight,
-            seaLevel = mapPixel.seaLevel,
             worldClimateNorth = mapPixel.worldClimateNorth,
             worldClimateNorthEast = mapPixel.worldClimateNorthEast,
             worldClimateEast = mapPixel.worldClimateEast,
