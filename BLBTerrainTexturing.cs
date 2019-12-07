@@ -40,7 +40,6 @@ namespace DaggerfallWorkshop
 
         public JobHandle ScheduleAssignTilesJob(ITerrainSampler terrainSampler, ref MapPixelData mapData, JobHandle dependencies, bool march = true)
         {
-            float locationSize = Mathf.Max((mapData.locationRect.xMax - mapData.locationRect.xMin),(mapData.locationRect.yMax - mapData.locationRect.yMin));
             // Cache tile data to minimise noise sampling during march.
             NativeArray<byte> tileData = new NativeArray<byte>(tileDataDim * tileDataDim, Allocator.TempJob);
             GenerateTileDataJob tileDataJob = new GenerateTileDataJob
@@ -57,7 +56,7 @@ namespace DaggerfallWorkshop
                 worldClimate = mapData.worldClimate,
                 /* BLB: Added locationID and locationSize */
                 locationID = mapData.locationID,
-                locationSize = locationSize
+                locationRect = mapData.locationRect
                 /* BLB: Added locationID and locationSize */
             };
             JobHandle tileDataHandle = tileDataJob.Schedule(tileDataDim * tileDataDim, 64, dependencies);
@@ -159,7 +158,7 @@ namespace DaggerfallWorkshop
             public int locationID;
             public int worldClimate;
 
-            public float locationSize;
+            public Rect locationRect;
 
             // Gets noise value
             private float NoiseWeight(float worldX, float worldY)
@@ -186,15 +185,15 @@ namespace DaggerfallWorkshop
                 float upperGrassSpread = 0.85f;
                 //Swamp, mostly grass
                 if(worldClimate == 227 || worldClimate == 228) {
-                    lowerGrassSpread = 0.25f;
+                    lowerGrassSpread = 0.35f;
                     upperGrassSpread = 0.75f;
                 //Desert
                 } else if(worldClimate == 224 || worldClimate == 225 || worldClimate == 259) {
-                    lowerGrassSpread = 0.375f;
-                    upperGrassSpread = 0.625f;
+                    lowerGrassSpread = 0.333f;
+                    upperGrassSpread = 0.666f;
                 //Mountain
                 } else if(worldClimate == 226 || worldClimate == 230) {
-                    lowerGrassSpread = 0.25f;
+                    lowerGrassSpread = 0.35f;
                     upperGrassSpread = 0.65f;
                 }
 
@@ -229,6 +228,7 @@ namespace DaggerfallWorkshop
 
             public void Execute(int index)
             {
+                //float locationSize = Mathf.Max((mapData.locationRect.xMax - mapData.locationRect.xMin),(mapData.locationRect.yMax - mapData.locationRect.yMin));
                 int x = JobA.Row(index, tdDim);
                 int y = JobA.Col(index, tdDim);
 
@@ -253,39 +253,42 @@ namespace DaggerfallWorkshop
 
                     //As we get closer to the center of the tile, we allow more dirt tiles
                     //by lowering the rndCheck
-                    if(locationSize > 64) {
+                    if(
+                        x > locationRect.xMin - 3 && x < locationRect.xMax + 3 && 
+                        y > locationRect.yMin - 3 && y < locationRect.yMax + 3
+                    ) {
                         rndCheck = 0.125f;
                     }
                     else if(
                         (fx < 0.0625f || fy < 0.0625f) || 
                         (fx > 0.9375f || fy > 0.9375f)
                     ) {
-                        rndCheck = 1.075f;
+                        rndCheck = 0.75f;
                     } else if(
                         (fx < 0.125f || fy < 0.125f) || 
                         (fx > 0.875f || fy > 0.875f)
                     ) {
-                        rndCheck = 1.0f;
+                        rndCheck = 0.625f;
                     } else if(
                         (fx < 0.25f || fy < 0.25f) || 
                         (fx > 0.75f || fy > 0.75f)
                     ) {
-                        rndCheck = 0.85f;
+                        rndCheck = 0.5f;
                     } else if(
                         (fx < 0.3125f || fy < 0.3125f) || 
                         (fx > 0.6875f || fy > 0.6875f)
                     ) {
-                        rndCheck = 0.75f;
+                        rndCheck = 0.375f;
                     } else if(
                         (fx < 0.3750f || fy < 0.3750f) || 
                         (fx > 0.625f || fy > 0.625f)
                     ) {
-                        rndCheck = 0.65f;
+                        rndCheck = 0.25f;
                     } else if(
                         (fx < 0.4375f || fy < 0.4375f) || 
                         (fx > 0.5625f || fy > 0.5625f)
                     ) {
-                        rndCheck = 0.3875f;
+                        rndCheck = 0.125f;
                     } else if(
                         (fx <= 0.5f || fy <= 0.5f) || 
                         (fx > 0.5f || fy > 0.5f)
@@ -309,7 +312,9 @@ namespace DaggerfallWorkshop
                     return;
                 } else if (height > oceanElevation && height < (beachElevation  + (JobRand.Next(-15000000, 15000000) / 10000000f)))
                 {
-                    tileData[index] = GetClimateWeightedRecord(rnd, worldClimate);
+                    //rnd = NoiseWeight(latitude, longitude);
+                    tileData[index] = dirt;
+                    //tileData[index] = GetClimateWeightedRecord(rnd, worldClimate);
                     return;
                 }
                 // Set texture tile using weighted noise

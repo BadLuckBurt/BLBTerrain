@@ -294,11 +294,11 @@ public class BLBTerrainSampler : TerrainSampler
             int noisex = mapPixelX * (hDim - 1) + x;
             int noisey = (MapsFile.MaxMapPixelY - mapPixelY) * (hDim - 1) + y;
 
-            //float noise = Mathf.PerlinNoise(noisex * 0.032f, noisey * 0.032f);
-            float noise = Mathf.PerlinNoise(noisex * 0.01f, noisey * 0.0085f);
+            float noise = Mathf.PerlinNoise(noisex * 0.032f, noisey * 0.032f);
+            //float noise = Mathf.PerlinNoise(noisex * 0.01f, noisey * 0.0085f);
             if(worldClimate != noiseIndex && direction != "") {
                 float height1 = scaledHeight;
-                float height2 = 0.0f;
+                float height2 = scaledHeight;//0.0f;
                 if(noiseIndex == 0) {
                     height2 = scaledOceanElevation;
                 } else if(noiseIndex != 3) {
@@ -329,7 +329,9 @@ public class BLBTerrainSampler : TerrainSampler
                         }
                         break;
                     case 3: //Mountain
-                        scaledHeight = GetClimateHeight(noisex, noisey, noiseIndex, scaledHeight, noise);
+                        if(scaledHeight >= scaledBeachElevation) {
+                            scaledHeight = GetClimateHeight(noisex, noisey, noiseIndex, scaledHeight, noise);
+                        }
                         //scaledHeight += (scaledHeight / 4) * noise;
                         break;
                     case 4://Temperate
@@ -380,8 +382,9 @@ public class BLBTerrainSampler : TerrainSampler
             }
             //Terrain is too high so lower it
             if(scaledHeight > maxTerrainHeight) {
-                scaledHeight -= (scaledHeight - maxTerrainHeight) * 1.625f;
+                scaledHeight = maxTerrainHeight;
             }
+
             //Calculate and assign the final height value
             height = Mathf.Clamp01(scaledHeight / maxTerrainHeight);
             heightmapData[index] = height;
@@ -452,7 +455,7 @@ public class BLBTerrainSampler : TerrainSampler
             adjacentClimates[i] = GetClimateNoiseIndex(adjacentClimates[i]);
     }
 
-    private static float GetClimateHeight(int noisex, int noisey, int noiseIndex, float height, float noise) {
+    private static float GetClimateHeight(int noisex, int noisey, int noiseIndex, float height, float noise, bool log = false) {
         float result = 0.0f;
         float powNoise = 0.0f;
         float tmpNoise = 0.0f;
@@ -463,23 +466,31 @@ public class BLBTerrainSampler : TerrainSampler
                 return scaledBeachElevation - (4f * (noise + 0.125f));
             case 2: //Desert
                 return scaledBeachElevation + (2f * (noise));
-            case 3: //Mountain
+            case 3:
+                //powNoise = NewPowNoise(noisex / 1281.28f, noisey / 641.28f, noise, 2f) / 10;
+                powNoise = NewPowNoise(noisex / 641.28f, noisey / 320.64f, noise, 3f) / 10f;
+                result = height + ((height) * (powNoise)) + (scaledBeachElevation * noise);
+                if(result >= maxTerrainHeight) {
+                    Debug.Log("Max height exceeded: " + result.ToString() + " - " + powNoise.ToString());
+                }
+                return result;
+            case 9: //Mountain
                 //float powNoise = Mathf.Max(0.0001f, GenerateRidgeNoise(noise));
                 //float powNoise = TerraceNoise(noise);
                 //float result = height + ((height / 20f) * powNoise);
-                powNoise = Mathf.Max(0.001f, PowNoise(noise, 2f));
+                powNoise = Mathf.Max(0.95f, PowNoise(noise, 2f));
                 tmpNoise = Mathf.Max(0.001f,Mathf.PerlinNoise(noisey * 0.088f, noisex * 0.064f));
                 noise = Mathf.Max(0.001f, noise * tmpNoise);
-                result = height + ((height / 20f) * (powNoise * noise));
+                result = scaledBeachElevation + ((height / 1f) * (powNoise * noise));
                 if(result <= height) {
-                    result = height + (height / 20f);
+                    result = scaledBeachElevation + (height / 1f);
                 }
                 return result;
             case 4: //Temperate
-                powNoise = Mathf.Max(0.005f, PowNoise(noise, 3f));
-                tmpNoise = Mathf.Max(0.5f,Mathf.PerlinNoise(noisey * 0.088f, noisex * 0.064f));
-                noise = Mathf.Max(0.5f, noise * tmpNoise);
-                result = height + ((height / 30f) * (powNoise * noise));
+                powNoise = Mathf.Max(0.001f, PowNoise(noise, 3f));
+                tmpNoise = Mathf.Max(0.001f,Mathf.PerlinNoise(noisey * 0.088f, noisex * 0.064f));
+                noise = Mathf.Max(0.001f, noise * tmpNoise);
+                result = scaledBeachElevation + ((height / 30f) * (powNoise * noise));
                 return result;
         }
         return height;
@@ -489,7 +500,28 @@ public class BLBTerrainSampler : TerrainSampler
         float e = 1f * noise;
         e +=  0.5f * (2 * noise);
         e += 0.25f * (4 * noise);
-        return Mathf.Pow(e,pow);
+        return Mathf.Pow(e,pow) / 10000f;
+    }
+
+    private static float NewPowNoise(float noisex, float noisey, float noise, float pow) {
+        float m1 = 1.00f;
+        float m2 = 0.5f;
+        float m4 = 0.25f;
+        float m8 = 0.13f;
+        float m16 = 0.065f;
+        float multiplier = 1.0f;
+        float n1 = Mathf.PerlinNoise(noisey * multiplier, noisex * multiplier);
+        float n2 = Mathf.PerlinNoise(noisey * multiplier, noisex * multiplier) * 2;
+        float n4 = Mathf.PerlinNoise(noisey * multiplier, noisex * multiplier) * 4;
+        float n8 = Mathf.PerlinNoise(noisey * multiplier, noisex * multiplier) * 8;
+        float n16 = Mathf.PerlinNoise(noisey * multiplier, noisex * multiplier) * 16;
+        float e =   (m1 * (n1)) + 
+                    (m2 * (n2)) + 
+                    (m4 * (n4)) + 
+                    (m8 * (n8)) +
+                    (m16 * (n16));
+        e /= m1 + m2 + m4 + m8 + m16;
+        return Mathf.Pow(e, pow);
     }
 
     private static float TerraceNoise(float noise) {
