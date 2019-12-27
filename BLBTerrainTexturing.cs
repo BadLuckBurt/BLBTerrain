@@ -54,6 +54,7 @@ namespace DaggerfallWorkshop
                 mapPixelX = mapData.mapPixelX,
                 mapPixelY = mapData.mapPixelY,
                 worldClimate = mapData.worldClimate,
+                adjacentClimates = mapData.adjacentClimates,
                 /* BLB: Added locationID and locationSize */
                 locationID = mapData.locationID,
                 locationRect = mapData.locationRect
@@ -110,8 +111,6 @@ namespace DaggerfallWorkshop
 
                 // Do nothing if in location rect as texture already set, to 0xFF if zero
                 if(
-                    (x >= locationRect.xMin && x <= locationRect.xMax) && 
-                    (y >= locationRect.yMin && y <= locationRect.yMax) && 
                     tilemapData[index] != 0 
                 ) {
                     return;
@@ -157,6 +156,7 @@ namespace DaggerfallWorkshop
 
             public int locationID;
             public int worldClimate;
+            public NativeArray<byte> adjacentClimates;
 
             public Rect locationRect;
 
@@ -228,7 +228,6 @@ namespace DaggerfallWorkshop
 
             public void Execute(int index)
             {
-                //float locationSize = Mathf.Max((mapData.locationRect.xMax - mapData.locationRect.xMin),(mapData.locationRect.yMax - mapData.locationRect.yMin));
                 int x = JobA.Row(index, tdDim);
                 int y = JobA.Col(index, tdDim);
 
@@ -244,10 +243,108 @@ namespace DaggerfallWorkshop
                 float weight = 0;
                 float rndCheck = 0.5f;
                 float rnd = 0.0f;
-                int randMin = -20000000;
-                int randMax = 10000000;
+                //int randMin = -20000000;
+                //int randMax = 10000000;
+
+                int borderMin = 32;
+                int borderMax = 96;
+                bool north = (y >= borderMax);
+                bool east = (x >= borderMax);
+                bool south = (y <= borderMin);
+                bool west = (x <= borderMin);
+
+                //Ocean
+                if(worldClimate == 223 && 2 == 3) {
+                    bool borderLand = false;
+                    float offset = 0;
+                    if(north && west) {
+                        if(adjacentClimates[(int)MapPixelData.Adjacent.NorthWest] != 0) {
+                            borderLand = true;
+                            offset = x / borderMin;
+                            offset+= Math.Abs((y - 128) / borderMin);
+                            offset /= 2;
+                        } else if(adjacentClimates[(int)MapPixelData.Adjacent.North] != 0) {
+                            borderLand = true;
+                            offset+= Math.Abs((y - 128) / borderMin);
+                        } else if(adjacentClimates[(int)MapPixelData.Adjacent.West] != 0) {
+                            borderLand = true;
+                            offset = x / borderMin;
+                        }
+                    } else if(north && east) {
+                        if(adjacentClimates[(int)MapPixelData.Adjacent.NorthEast] != 0) {
+                            borderLand = true;
+                            offset+= Math.Abs((x - 128) / borderMin);
+                            offset+= Math.Abs((y - 128) / borderMin);
+                            offset /= 2;
+                        } else if(adjacentClimates[(int)MapPixelData.Adjacent.North] != 0) {
+                            borderLand = true;
+                            offset+= Math.Abs((y - 128) / borderMin);
+                        } else if(adjacentClimates[(int)MapPixelData.Adjacent.East] != 0) {
+                            borderLand = true;
+                            offset+= Math.Abs((x - 128) / borderMin);
+                        }
+                    } else if(south && east) {
+                        if(adjacentClimates[(int)MapPixelData.Adjacent.SouthEast] != 0) {
+                            borderLand = true;
+                            offset+= Math.Abs((x - 128) / borderMin);
+                            offset+= y / borderMin;
+                            offset /= 2;
+                        } else if(adjacentClimates[(int)MapPixelData.Adjacent.South] != 0) {
+                            borderLand = true;
+                            offset+= y / borderMin;
+                        } else if(adjacentClimates[(int)MapPixelData.Adjacent.East] != 0) {
+                            borderLand = true;
+                            offset+= Math.Abs((x - 128) / borderMin);
+                        }
+                    } else if(south && west) {
+                        if(adjacentClimates[(int)MapPixelData.Adjacent.SouthWest] != 0) {
+                            borderLand = true;
+                            offset = x / borderMin;
+                            offset+= y / borderMin;
+                            offset /= 2;
+                        } else if(adjacentClimates[(int)MapPixelData.Adjacent.South] != 0) {
+                            borderLand = true;
+                            offset+= y / borderMin;
+                        } else if(adjacentClimates[(int)MapPixelData.Adjacent.West] != 0) {
+                            borderLand = true;
+                            offset = x / borderMin;
+                        }
+                    } else if(west) {
+                        if(adjacentClimates[(int)MapPixelData.Adjacent.West] != 0) {
+                            borderLand = true;
+                            offset = x / borderMin;
+                        }
+                    } else if(east) {
+                        if(adjacentClimates[(int)MapPixelData.Adjacent.East] != 0) {
+                            borderLand = true;
+                            offset+= Math.Abs((x - 128) / borderMin);
+                        }
+                    } else if(north) {
+                        if(adjacentClimates[(int)MapPixelData.Adjacent.North] != 0) {
+                            borderLand = true;
+                            offset+= Math.Abs((y - 128) / borderMin);
+                        }
+                    } else if(south) {
+                        if(adjacentClimates[(int)MapPixelData.Adjacent.South] != 0) {
+                            borderLand = true;
+                            offset = y / borderMin;
+                        }
+                    }
+                    if(borderLand) {
+                        weight = offset;
+                        float noise = NoiseWeight(latitude * 10f, longitude * 10f);
+
+                        if(noise < 0.75f) {
+                            tileData[index] = dirt;
+                            return;
+                        }
+                    }
+                    tileData[index] = water;
+                    return;
+                }
+
                 //Dealing with a location near water
-                if(height <= beachElevation && worldClimate != 223 && locationID > -1) {                            
+                if(height <= beachElevation && locationID > -1 && 2 == 3) {                            
                     float fx = x / 128.0f;
                     float fy = y / 128.0f;
 
@@ -295,7 +392,6 @@ namespace DaggerfallWorkshop
                     ) {
                         rndCheck = 0.1f;
                     }
-                    rndCheck = rndCheck;
                     rnd = NoiseWeight(latitude, longitude);
                     if(rnd >= rndCheck) {
                         //tileData[index] = GetClimateWeightedRecord(rnd, worldClimate);
@@ -306,14 +402,21 @@ namespace DaggerfallWorkshop
                     return;
                 }
                 // Ocean texture
-                if (height <= oceanElevation || worldClimate == 223)
+                if (height <= oceanElevation)
                 {
                     tileData[index] = water;
                     return;
-                } else if (height > oceanElevation && height < (beachElevation  + (JobRand.Next(-15000000, 15000000) / 10000000f)))
+                } else if (height > oceanElevation && height < beachElevation)
                 {
-                    //rnd = NoiseWeight(latitude, longitude);
                     tileData[index] = dirt;
+                    return;
+                    rnd = NoiseWeight(latitude, longitude);
+                    if(rnd < 0.75f) {
+                        tileData[index] = dirt;
+                    } else {
+                        tileData[index] = water;
+                        heightmapData[JobA.Idx(hy, hx, hDim)] = oceanElevation / maxTerrainHeight;
+                    }
                     //tileData[index] = GetClimateWeightedRecord(rnd, worldClimate);
                     return;
                 }

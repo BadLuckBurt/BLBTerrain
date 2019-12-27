@@ -14,8 +14,8 @@ public class BLBTerrainSampler : TerrainSampler
     //Raised ocean and beach elevation to cancel the rendering of stray climates in the ocean region
     //const float scaledOceanElevation = 5.9f * baseHeightScale; 
     //const float scaledBeachElevation = 6.125f * baseHeightScale;
-    const float scaledOceanElevation = 5.9f * baseHeightScale; 
-    const float scaledBeachElevation = 6.125f * baseHeightScale;
+    const float scaledOceanElevation = 5.875f * baseHeightScale; 
+    const float scaledBeachElevation = 6.0f * baseHeightScale;
 
     //Holds the mod settings, making the sampler configurable
     public static float[,] modSettings;
@@ -82,8 +82,8 @@ public class BLBTerrainSampler : TerrainSampler
             int y = JobA.Row(index, hDim);
 
             int noiseIndex = worldClimate;
-            bool north = (y > borderMax);
-            bool east = (x > borderMax);
+            bool north = (y >= borderMax);
+            bool east = (x >= borderMax);
             bool south = (y <= borderMin);
             bool west = (x <= borderMin);
             //When we are at the pixels borders, we check for different climates
@@ -239,29 +239,49 @@ public class BLBTerrainSampler : TerrainSampler
             //The current blend order from weak to strong is:
             //Ocean - Swamp <- Desert <- Temperate <- Mountain
             //Ocean 
-            if(worldClimate == 0) {
-                noiseIndex = 0;
-            //Swamp
-            } else if(worldClimate == 1) {
-                if(noiseIndex != 0) {
-                    //Swamp only blends into ocean
-                    noiseIndex = worldClimate;
+            if(2 == 3) {
+                if(worldClimate == 0) {
+                    noiseIndex = 0;
+                //Swamp
+                } else if(worldClimate == 1) {
+                    if(noiseIndex != 0) {
+                        //Swamp only blends into ocean
+                        noiseIndex = worldClimate;
+                    }
+                //Desert
+                } else if(worldClimate == 2) {
+                    //Desert only extends into ocean and swamp
+                    if(noiseIndex > 1) {
+                        noiseIndex = worldClimate;
+                    }
+                //Mountain
+                } else if(worldClimate == 3) {
+                    //Mountain extends into everything
+                //Temperate
+                } else if(worldClimate == 4) {
+                    //Temperate only extends into swamp rainforest and desert so reset if climate is mountain
+                    if(noiseIndex == 3) {
+                        noiseIndex = worldClimate;
+                    }
                 }
-            //Desert
-            } else if(worldClimate == 2) {
-                //Desert only extends into swamp
-                if(noiseIndex != 1) {
-                    noiseIndex = worldClimate;
-                }
-            //Mountain
-            } else if(worldClimate == 3) {
-                //Mountain extends into everything
-            //Temperate
+            }
+
+            if(worldClimate == 3) {
+                noiseIndex = 3;
             } else if(worldClimate == 4) {
-                //Temperate only extends into swamp rainforest and desert so reset if climate is mountain
-                if(noiseIndex == 3) {
+                if(noiseIndex != 3) {
                     noiseIndex = worldClimate;
                 }
+            } else if(worldClimate == 2) {
+                if(noiseIndex < 2) {
+                    noiseIndex = worldClimate;
+                }
+            } else if(worldClimate == 1) {
+                if(noiseIndex < 1) {
+                    noiseIndex = worldClimate;
+                }
+            } else if(worldClimate == 0) {
+
             }
 
             float rx = (float)x / div;
@@ -294,50 +314,43 @@ public class BLBTerrainSampler : TerrainSampler
             int noisex = mapPixelX * (hDim - 1) + x;
             int noisey = (MapsFile.MaxMapPixelY - mapPixelY) * (hDim - 1) + y;
 
+            int mapId = (mapPixelX * 1000) + mapPixelY;
+
             float noise = Mathf.PerlinNoise(noisex * 0.032f, noisey * 0.032f);
-            //float noise = Mathf.PerlinNoise(noisex * 0.01f, noisey * 0.0085f);
             if(worldClimate != noiseIndex && direction != "") {
                 float height1 = scaledHeight;
                 float height2 = scaledHeight;//0.0f;
-                if(noiseIndex == 0) {
-                    height2 = scaledOceanElevation;
-                } else if(noiseIndex != 3) {
-                    height2 = scaledBeachElevation;
-                }
                 float heightSum = 0.0f;
                 int multiplier = offset;
                 int multiplier2 = borderMin - multiplier;
-                heightSum = GetClimateHeight(noisex, noisey, worldClimate, height1, noise) * multiplier;
-                heightSum += GetClimateHeight(noisex, noisey, noiseIndex, height2, noise) * multiplier2;
+                if(worldClimate == 0 && offset > 0) {
+                    //height2 = scaledOceanElevation - (scaledOceanElevation * noise);
+                    heightSum = scaledOceanElevation;
+                    height2 = GetClimateHeight(noisex, noisey, noiseIndex, height2, noise) * multiplier2;
+                    height2 = height2 * (1.0f - (multiplier2 / borderMin));
+                } else {
+                    heightSum = GetClimateHeight(noisex, noisey, worldClimate, height1, noise) * multiplier;
+                    height2 = GetClimateHeight(noisex, noisey, noiseIndex, height2, noise) * multiplier2;
+                }
+                heightSum += height2;
                 multiplier += multiplier2;
                 scaledHeight = heightSum / multiplier;
             } else {
                 switch(noiseIndex) {
                     case 0: //Ocean
-                        scaledHeight = scaledOceanElevation;
+                        scaledHeight = scaledOceanElevation - (scaledOceanElevation * noise);
                         break;
                     case 1: //Swamp
-                        if(scaledHeight >= scaledBeachElevation) {
-                            scaledHeight = GetClimateHeight(noisex, noisey, noiseIndex, scaledBeachElevation, noise);
-                            //scaledHeight = scaledBeachElevation - (4f * (noise + 0.125f));
-                        }
+                        scaledHeight = GetClimateHeight(noisex, noisey, noiseIndex, scaledHeight, noise);
                         break;
                     case 2: //Desert
-                        if(scaledHeight >= scaledBeachElevation) {
-                            scaledHeight = GetClimateHeight(noisex, noisey, noiseIndex, scaledBeachElevation, noise);
-                            //scaledHeight = scaledBeachElevation + (2f * (noise));
-                        }
+                        scaledHeight = GetClimateHeight(noisex, noisey, noiseIndex, scaledHeight, noise);
                         break;
                     case 3: //Mountain
-                        if(scaledHeight >= scaledBeachElevation) {
-                            scaledHeight = GetClimateHeight(noisex, noisey, noiseIndex, scaledHeight, noise);
-                        }
-                        //scaledHeight += (scaledHeight / 4) * noise;
+                        scaledHeight = GetClimateHeight(noisex, noisey, noiseIndex, scaledHeight, noise);
                         break;
                     case 4://Temperate
-                        if(scaledHeight >= scaledBeachElevation) {
-                            scaledHeight = GetClimateHeight(noisex, noisey, noiseIndex, scaledBeachElevation, noise);
-                        }
+                        scaledHeight = GetClimateHeight(noisex, noisey, noiseIndex, scaledHeight, noise);
                         break;
                 }
             }
@@ -423,10 +436,6 @@ public class BLBTerrainSampler : TerrainSampler
         // Convert the adjacent climates to noise indexes
         ConvertClimateNoiseIndexes(mapPixel.adjacentClimates);
 
-        if(mapPixel.mapPixelX == 466 && mapPixel.mapPixelY == 352) {
-            Debug.Log("Map pixel climate: " + mapPixel.worldClimate.ToString());
-        }
-
         GenerateSamplesJob generateSamplesJob = new GenerateSamplesJob
         {
             shm = shm,
@@ -455,45 +464,45 @@ public class BLBTerrainSampler : TerrainSampler
             adjacentClimates[i] = GetClimateNoiseIndex(adjacentClimates[i]);
     }
 
-    private static float GetClimateHeight(int noisex, int noisey, int noiseIndex, float height, float noise, bool log = false) {
+    private static float GetClimateHeight(int noisex, int noisey, int noiseIndex, float height, float noise, bool water = false) {
         float result = 0.0f;
         float powNoise = 0.0f;
-        float tmpNoise = 0.0f;
+        //float tmpNoise = 0.0f;
         switch(noiseIndex) {
             case 0: //Ocean
                 return scaledOceanElevation;
             case 1: //Swamp
-                return scaledBeachElevation - (4f * (noise + 0.125f));
+                return scaledBeachElevation - (5f * (noise + 0.125f));
             case 2: //Desert
-                return scaledBeachElevation + (2f * (noise));
+                //powNoise = NewPowNoise(noisex / 64.128f, noisey / 32.064f, noise, 4f) / 250f;
+                //result = scaledBeachElevation + (height * powNoise) + ((scaledBeachElevation / 2) * noise);
+                //powNoise = SineNoise(noisey / 32.064f);
+                //tmpNoise = SineNoise(noisex / 64.128f);
+                //powNoise = ((powNoise * tmpNoise) * noise) / 10f;
+                powNoise = GenerateRidgeNoise((noisex / 64128f)) / 64f;
+                result = scaledBeachElevation + (height * powNoise) + ((scaledBeachElevation / 2) * noise);
+                return result;
             case 3:
                 //powNoise = NewPowNoise(noisex / 1281.28f, noisey / 641.28f, noise, 2f) / 10;
                 powNoise = NewPowNoise(noisex / 641.28f, noisey / 320.64f, noise, 3f) / 10f;
-                result = height + ((height) * (powNoise)) + (scaledBeachElevation * noise);
-                if(result >= maxTerrainHeight) {
-                    Debug.Log("Max height exceeded: " + result.ToString() + " - " + powNoise.ToString());
-                }
-                return result;
-            case 9: //Mountain
-                //float powNoise = Mathf.Max(0.0001f, GenerateRidgeNoise(noise));
-                //float powNoise = TerraceNoise(noise);
-                //float result = height + ((height / 20f) * powNoise);
-                powNoise = Mathf.Max(0.95f, PowNoise(noise, 2f));
-                tmpNoise = Mathf.Max(0.001f,Mathf.PerlinNoise(noisey * 0.088f, noisex * 0.064f));
-                noise = Mathf.Max(0.001f, noise * tmpNoise);
-                result = scaledBeachElevation + ((height / 1f) * (powNoise * noise));
-                if(result <= height) {
-                    result = scaledBeachElevation + (height / 1f);
-                }
+                result = scaledBeachElevation + (height * powNoise) + (scaledBeachElevation * noise);
                 return result;
             case 4: //Temperate
-                powNoise = Mathf.Max(0.001f, PowNoise(noise, 3f));
-                tmpNoise = Mathf.Max(0.001f,Mathf.PerlinNoise(noisey * 0.088f, noisex * 0.064f));
-                noise = Mathf.Max(0.001f, noise * tmpNoise);
-                result = scaledBeachElevation + ((height / 30f) * (powNoise * noise));
+                //powNoise = Mathf.Max(0.001f, PowNoise(noise, 3f));
+                //tmpNoise = Mathf.Max(0.001f,Mathf.PerlinNoise(noisey * 0.088f, noisex * 0.064f));
+                //noise = Mathf.Max(0.001f, noise * tmpNoise);
+                //result = scaledBeachElevation + ((height / 30f) * (powNoise * noise));
+                powNoise = NewPowNoise(noisex / 641.28f, noisey / 320.64f, noise, 4f) / 100f;
+                result = scaledBeachElevation + (height * powNoise) + (scaledBeachElevation * noise);
                 return result;
         }
         return height;
+    }
+
+    private static float SineNoise(float y) {
+        float result = 0.0f;
+        result = (1.0f + Mathf.Sin(y)) / 2;
+        return result;
     }
 
     private static float PowNoise(float noise, float pow) {
