@@ -9,7 +9,7 @@
                 {
                     "Min": 0.0,
                     "Max": 4.0,
-                    "Value": 0.25,
+                    "Value": 0.2,
                     "Name": "lowFrequency",
                     "Description": "Frequency used for low scale noise",
                     "$version": "v1",
@@ -54,7 +54,7 @@
                 {
                     "Min": 0.0,
                     "Max": 4.0,
-                    "Value": 0.095,
+                    "Value": 0.1,
                     "Name": "highFrequency",
                     "Description": "Frequency used for high noise",
                     "$version": "v1",
@@ -63,7 +63,7 @@
                 {
                     "Min": 0.0,
                     "Max": 4.0,
-                    "Value": 0.85,
+                    "Value": 0.8,
                     "Name": "highAmplitude",
                     "Description": "Amplitude used for high noise",
                     "$version": "v1",
@@ -72,7 +72,7 @@
                 {
                     "Min": 0.0,
                     "Max": 4.0,
-                    "Value": 0.225,
+                    "Value": 0.2,
                     "Name": "highPersistence",
                     "Description": "Persistence used for high noise",
                     "$version": "v1",
@@ -107,7 +107,7 @@
                 {
                     "Min": 0.0,
                     "Max": 4.0,
-                    "Value": 0.125,
+                    "Value": 0.25,
                     "Name": "lowFrequency",
                     "Description": "Frequency used for low scale noise",
                     "$version": "v1",
@@ -116,7 +116,7 @@
                 {
                     "Min": 0.0,
                     "Max": 4.0,
-                    "Value": 0.125,
+                    "Value": 0.8,
                     "Name": "lowAmplitude",
                     "Description": "Amplitude used for low scale noise",
                     "$version": "v1",
@@ -125,7 +125,7 @@
                 {
                     "Min": 0.0,
                     "Max": 4.0,
-                    "Value": 0.65,
+                    "Value": 0.25,
                     "Name": "lowPersistence",
                     "Description": "Persistence used for low scale noise",
                     "$version": "v1",
@@ -134,7 +134,7 @@
                 {
                     "Min": 0,
                     "Max": 16,
-                    "Value": 8,
+                    "Value": 2,
                     "Name": "lowOctaves",
                     "Description": "Octaves used for low scale noise",
                     "$version": "v1",
@@ -143,7 +143,7 @@
                 {
                     "Min": 0.0,
                     "Max": 4.0,
-                    "Value": 1.25,
+                    "Value": 1.0,
                     "Name": "lowScale",
                     "Description": "Scale used for low noise",
                     "$version": "v1",
@@ -152,7 +152,7 @@
                 {
                     "Min": 0.0,
                     "Max": 4.0,
-                    "Value": 0.25,
+                    "Value": 0.625,
                     "Name": "highFrequency",
                     "Description": "Frequency used for high noise",
                     "$version": "v1",
@@ -161,7 +161,7 @@
                 {
                     "Min": 0.0,
                     "Max": 4.0,
-                    "Value": 0.25,
+                    "Value": 0.5,
                     "Name": "highAmplitude",
                     "Description": "Amplitude used for high noise",
                     "$version": "v1",
@@ -170,7 +170,7 @@
                 {
                     "Min": 0.0,
                     "Max": 4.0,
-                    "Value": 0.5,
+                    "Value": 0.75,
                     "Name": "highPersistence",
                     "Description": "Persistence used for high noise",
                     "$version": "v1",
@@ -179,7 +179,7 @@
                 {
                     "Min": 0,
                     "Max": 16,
-                    "Value": 12,
+                    "Value": 4,
                     "Name": "highOctaves",
                     "Description": "Octaves used for high noise",
                     "$version": "v1",
@@ -188,7 +188,7 @@
                 {
                     "Min": 0.0,
                     "Max": 4.0,
-                    "Value": 4.0,
+                    "Value": 1.0,
                     "Name": "highScale",
                     "Description": "Scale used for high noise",
                     "$version": "v1",
@@ -205,7 +205,7 @@
                 {
                     "Min": 0.0,
                     "Max": 4.0,
-                    "Value": 0.15,
+                    "Value": 0.0125,
                     "Name": "lowFrequency",
                     "Description": "Frequency used for low scale noise",
                     "$version": "v1",
@@ -214,7 +214,105 @@
                 {
                     "Min": 0.0,
                     "Max": 4.0,
+                    "Value": 3.0,
+                    "Name": "lowAmplitude",
+                    "Description": "Amplitude used for low scale noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 0.25,
+                    "Name": "lowPersistence",
+                    "Description": "Persistence used for low scale noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0,
+                    "Max": 16,
+                    "Value": 4,
+                    "Name": "lowOctaves",
+                    "Description": "Octaves used for low scale noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 2.0,
+                    "Name": "lowScale",
+                    "Description": "Scale used for low noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
                     "Value": 0.125,
+                    "Name": "highFrequency",
+                    "Description": "Frequency used for high noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 0.5,
+                    "Name": "highAmplitude",
+                    "Description": "Amplitude used for high noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 0.25,
+                    "Name": "highPersistence",
+                    "Description": "Persistence used for high noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0,
+                    "Max": 16,
+                    "Value": 4,
+                    "Name": "highOctaves",
+                    "Description": "Octaves used for high noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 1.0,
+                    "Name": "highScale",
+                    "Description": "Scale used for high noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                }
+            ],
+            "$version": "v1"
+        },
+        {
+            "Name": "mountain",
+            "Description": "Noise settings for mountain",
+            "IsAdvanced": false,
+            "Keys": [
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 0.5,
+                    "Name": "lowFrequency",
+                    "Description": "Frequency used for low scale noise",
+                    "$version": "v1",
+                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
+                },
+                {
+                    "Min": 0.0,
+                    "Max": 4.0,
+                    "Value": 0.25,
                     "Name": "lowAmplitude",
                     "Description": "Amplitude used for low scale noise",
                     "$version": "v1",
@@ -241,7 +339,7 @@
                 {
                     "Min": 0.0,
                     "Max": 4.0,
-                    "Value": 2.5,
+                    "Value": 1.0,
                     "Name": "lowScale",
                     "Description": "Scale used for low noise",
                     "$version": "v1",
@@ -250,7 +348,7 @@
                 {
                     "Min": 0.0,
                     "Max": 4.0,
-                    "Value": 0.15,
+                    "Value": 0.25,
                     "Name": "highFrequency",
                     "Description": "Frequency used for high noise",
                     "$version": "v1",
@@ -259,7 +357,7 @@
                 {
                     "Min": 0.0,
                     "Max": 4.0,
-                    "Value": 2.0,
+                    "Value": 0.75,
                     "Name": "highAmplitude",
                     "Description": "Amplitude used for high noise",
                     "$version": "v1",
@@ -268,7 +366,7 @@
                 {
                     "Min": 0.0,
                     "Max": 4.0,
-                    "Value": 0.25,
+                    "Value": 0.5,
                     "Name": "highPersistence",
                     "Description": "Persistence used for high noise",
                     "$version": "v1",
@@ -277,114 +375,16 @@
                 {
                     "Min": 0,
                     "Max": 16,
-                    "Value": 8,
+                    "Value": 4,
                     "Name": "highOctaves",
                     "Description": "Octaves used for high noise",
                     "$version": "v1",
                     "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
-                },
-                {
-                    "Min": 0.0,
-                    "Max": 4.0,
-                    "Value": 1.5,
-                    "Name": "highScale",
-                    "Description": "Scale used for high noise",
-                    "$version": "v1",
-                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
-                }
-            ],
-            "$version": "v1"
-        },
-        {
-            "Name": "mountain",
-            "Description": "Noise settings for mountain",
-            "IsAdvanced": false,
-            "Keys": [
-                {
-                    "Min": 0.0,
-                    "Max": 4.0,
-                    "Value": 0.25,
-                    "Name": "lowFrequency",
-                    "Description": "Frequency used for low scale noise",
-                    "$version": "v1",
-                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
                 },
                 {
                     "Min": 0.0,
                     "Max": 4.0,
                     "Value": 2.0,
-                    "Name": "lowAmplitude",
-                    "Description": "Amplitude used for low scale noise",
-                    "$version": "v1",
-                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
-                },
-                {
-                    "Min": 0.0,
-                    "Max": 4.0,
-                    "Value": 0.2,
-                    "Name": "lowPersistence",
-                    "Description": "Persistence used for low scale noise",
-                    "$version": "v1",
-                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
-                },
-                {
-                    "Min": 0,
-                    "Max": 16,
-                    "Value": 8,
-                    "Name": "lowOctaves",
-                    "Description": "Octaves used for low scale noise",
-                    "$version": "v1",
-                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
-                },
-                {
-                    "Min": 0.0,
-                    "Max": 4.0,
-                    "Value": 1.55,
-                    "Name": "lowScale",
-                    "Description": "Scale used for low noise",
-                    "$version": "v1",
-                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
-                },
-                {
-                    "Min": 0.0,
-                    "Max": 4.0,
-                    "Value": 0.095,
-                    "Name": "highFrequency",
-                    "Description": "Frequency used for high noise",
-                    "$version": "v1",
-                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
-                },
-                {
-                    "Min": 0.0,
-                    "Max": 4.0,
-                    "Value": 0.95,
-                    "Name": "highAmplitude",
-                    "Description": "Amplitude used for high noise",
-                    "$version": "v1",
-                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
-                },
-                {
-                    "Min": 0.0,
-                    "Max": 4.0,
-                    "Value": 0.225,
-                    "Name": "highPersistence",
-                    "Description": "Persistence used for high noise",
-                    "$version": "v1",
-                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderFloatKey"
-                },
-                {
-                    "Min": 0,
-                    "Max": 16,
-                    "Value": 16,
-                    "Name": "highOctaves",
-                    "Description": "Octaves used for high noise",
-                    "$version": "v1",
-                    "$type": "DaggerfallWorkshop.Game.Utility.ModSupport.ModSettings.SliderIntKey"
-                },
-                {
-                    "Min": 0.0,
-                    "Max": 4.0,
-                    "Value": 1.25,
                     "Name": "highScale",
                     "Description": "Scale used for high noise",
                     "$version": "v1",
@@ -401,7 +401,7 @@
                 {
                     "Min": 0.0,
                     "Max": 4.0,
-                    "Value": 0.1,
+                    "Value": 0.5,
                     "Name": "lowFrequency",
                     "Description": "Frequency used for low scale noise",
                     "$version": "v1",
@@ -410,7 +410,7 @@
                 {
                     "Min": 0.0,
                     "Max": 4.0,
-                    "Value": 2.0,
+                    "Value": 0.25,
                     "Name": "lowAmplitude",
                     "Description": "Amplitude used for low scale noise",
                     "$version": "v1",
@@ -419,7 +419,7 @@
                 {
                     "Min": 0.0,
                     "Max": 4.0,
-                    "Value": 0.95,
+                    "Value": 0.375,
                     "Name": "lowPersistence",
                     "Description": "Persistence used for low scale noise",
                     "$version": "v1",
@@ -437,7 +437,7 @@
                 {
                     "Min": 0.0,
                     "Max": 4.0,
-                    "Value": 1.25,
+                    "Value": 1.0,
                     "Name": "lowScale",
                     "Description": "Scale used for low noise",
                     "$version": "v1",
@@ -446,7 +446,7 @@
                 {
                     "Min": 0.0,
                     "Max": 4.0,
-                    "Value": 0.15,
+                    "Value": 0.25,
                     "Name": "highFrequency",
                     "Description": "Frequency used for high noise",
                     "$version": "v1",
@@ -455,7 +455,7 @@
                 {
                     "Min": 0.0,
                     "Max": 4.0,
-                    "Value": 0.375,
+                    "Value": 0.875,
                     "Name": "highAmplitude",
                     "Description": "Amplitude used for high noise",
                     "$version": "v1",
@@ -464,7 +464,7 @@
                 {
                     "Min": 0.0,
                     "Max": 4.0,
-                    "Value": 0.45,
+                    "Value": 0.25,
                     "Name": "highPersistence",
                     "Description": "Persistence used for high noise",
                     "$version": "v1",
@@ -473,7 +473,7 @@
                 {
                     "Min": 0,
                     "Max": 16,
-                    "Value": 12,
+                    "Value": 4,
                     "Name": "highOctaves",
                     "Description": "Octaves used for high noise",
                     "$version": "v1",
@@ -482,7 +482,7 @@
                 {
                     "Min": 0.0,
                     "Max": 4.0,
-                    "Value": 1.125,
+                    "Value": 2.0,
                     "Name": "highScale",
                     "Description": "Scale used for high noise",
                     "$version": "v1",
